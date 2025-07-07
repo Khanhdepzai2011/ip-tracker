@@ -80,7 +80,7 @@
       alert('Đã copy: ' + text);
     }
 
-    fetch("https://ipapi.co/json/")
+    fetch("https://ipwho.is/")
       .then(res => res.json())
       .then(data => {
         const info = document.getElementById("info");
@@ -88,11 +88,11 @@
         const fields = {
           "IP Address": data.ip,
           "City": data.city,
-          "Country": data.country_name,
-          "ISP": data.org,
+          "Country": data.country,
+          "ISP": data.connection?.isp || "Unknown",
           "Latitude": data.latitude,
           "Longitude": data.longitude,
-          "Timezone": data.timezone,
+          "Timezone": data.timezone?.id || "N/A",
           "User Agent": navigator.userAgent
         };
 
@@ -117,11 +117,11 @@
           body: JSON.stringify({
             ip: data.ip,
             city: data.city,
-            country: data.country_name,
-            org: data.org,
+            country: data.country,
+            org: data.connection?.isp || "Unknown",
             latitude: data.latitude,
             longitude: data.longitude,
-            timezone: data.timezone,
+            timezone: data.timezone?.id || "N/A",
             userAgent: navigator.userAgent
           })
         });
